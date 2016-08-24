@@ -30,20 +30,25 @@ else {
 		){
 
 			i18n = i18nViewer;
+			var search;
 
 			// When a section is being loaded (don't wait for the Main Stage media to be loaded)
 			topic.subscribe("story-load-section", function(index){
 				console.log("The section", index, "is being loaded");
+				if(search)
+				search.destroy();
 			});
 
 			// After a map is loaded (when the map starts to render)
 			topic.subscribe("story-loaded-map", function(result){
 
+
+
 				console.log("The map", result.id, "has been loaded from the section", result.index);
 					var currmap=app.maps[result.id].response.map;
 				console.log(app.maps[result.id].response.map);
 
-					var search = new Search({
+						search = new Search({
 						enableButtonMode: true, //this enables the search widget to display as a single button
 						enableLabel: false,
 						enableInfoWindow: true,
