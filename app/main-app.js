@@ -31,23 +31,27 @@ else {
 
 			i18n = i18nViewer;
 			var search;
+			var cnt=0;
 
 			// When a section is being loaded (don't wait for the Main Stage media to be loaded)
 			topic.subscribe("story-load-section", function(index){
 				console.log("The section", index, "is being loaded");
-				if(search)
-				search.destroy();
+				// if(search)
+				// search.destroy();
+				if(app.data.getCurrentSectionIndex()!=3&&cnt==1)
+				search.hide();
 			});
 
 			// After a map is loaded (when the map starts to render)
 			topic.subscribe("story-loaded-map", function(result){
-
-
-
 				console.log("The map", result.id, "has been loaded from the section", result.index);
-					var currmap=app.maps[result.id].response.map;
-				console.log(app.maps[result.id].response.map);
-
+					 
+					if(app.data.getCurrentSectionIndex()==3&&cnt==1){
+						search.show();
+					}
+				if(app.data.getCurrentSectionIndex()==3&&cnt==0){
+					
+						var currmap=app.maps[result.id].response.map;
 						search = new Search({
 						enableButtonMode: true, //this enables the search widget to display as a single button
 						enableLabel: false,
@@ -58,7 +62,12 @@ else {
 						ZoomScale:10,
 						enableHighlight:false
 					}, "search");
+					search.startup();
+					cnt=1;
+				}
 
+			
+					
 
 
 				//*********CONFIGURE LAYER LIST FOR SEARCH
@@ -89,7 +98,7 @@ else {
 				////Set the sources above to the search widget
 				//search.set("sources", sources);
 
-				search.startup();
+				
 
 
 			});
